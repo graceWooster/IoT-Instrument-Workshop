@@ -1,25 +1,30 @@
-int BUTTON_PINS[4] = {22, 23, 32, 33};
-#define BUZZER_PIN 25 // ESP32 GPIO21 pin connected to Buzzer's pin
+int BUTTON_PINS[4] = {22, 23, 32, 33};       // GPIO pins for the 4 buttons
+#define BUZZER_PIN 25                        // ESP32 GPIO21 pin connected to Buzzer's pin
 int frequencies[4] = {392, 440, 494, 523};   //second half G-A-B-C
-int buttonState[4] = {0, 0, 0, 0};
-int POT_PIN = 34;   //potentiometer pin
-int potValue = 0;
-int pot_frequency = 0;
-#define pot_button 1
-int pot_button_state = 0;
+int buttonState[4] = {0, 0, 0, 0};           // states for each each of the buttons
+int POT_PIN = 34;                     // potentiometer pin
+int potValue = 0;                     // Value of the potentiometer 
+int pot_frequency = 0;                // Frequency associated with the pot value
+#define pot_button 1                  // GPIO pin for the pot button
+int pot_button_state = 0;             // state for the pot button
 
 void setup() {
   Serial.begin(9600);                // initialize serial
   pinMode(BUZZER_PIN, OUTPUT);       // set ESP32 pin to output mode
+
+  // setup the pot button
   pinMode(pot_button, INPUT_PULLUP);
+  // uses a for loop to initialize each button in the array
   for (int i = 0; i < 4; i++) {
     pinMode(BUTTON_PINS[i], INPUT_PULLUP);
   }
 }
 
 void loop() {
+  // read the pot button state
   pot_button_state = digitalRead(pot_button);
 
+  //read each of the 4 buttons states
   for (int i = 0; i < 4; i++) {
     buttonState[i] = digitalRead(BUTTON_PINS[i]);
   }
@@ -63,4 +68,3 @@ void loop() {
 
   noTone(BUZZER_PIN);  // turn off
 }
-
